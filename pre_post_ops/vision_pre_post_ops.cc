@@ -11,7 +11,7 @@
 //   char* new_array_ptr = static_cast<char*>(malloc(channels * size * sizeof(char)));
 //   char* head_new_array_ptr = new_array_ptr;
 
-//   int* tab = static_cast<int*>(malloc(channels * size * sizeof(int)));; 
+//   double* tab = static_cast<double*>(malloc(channels * size * sizeof(int)));; 
 
 //   for(int i = 0; i < cols; i++ )
 //     for( int k = 0; k < rows; k++ )
@@ -55,10 +55,9 @@ void Flip(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> &
 
   char* new_array_ptr = static_cast<char*>(malloc(channels * size * sizeof(char)));
   
-  register char *nlp1, *nrp1;
-  register char *lp1, *rp1;
-
   if(flip_type==Horizontal){
+    register char *nlp1, *nrp1;
+    register char *lp1, *rp1;
     for(int k=0; k<channels; k++){
       for(int l=0, r=cols-1; l<r; l++, r--){
         
@@ -72,34 +71,98 @@ void Flip(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> &
         lp1 = &array_ptr[index_1];
         rp1 = &array_ptr[index_5];
 
-        for(int i=0; i<rows; i=i+4){
-          *nlp1 = *rp1;
-          *nrp1 = *lp1;
+        // for(int i=0; i<rows; i=i+4){
+        //   *nlp1 = *rp1;
+        //   *nrp1 = *lp1;
 
-          *(nlp1+1) = *(rp1+1);
-          *(nrp1+1) = *(lp1+1);
-
-
-          *(nlp1+2) = *(rp1+2);
-          *(nrp1+2) = *(lp1+2);
+        //   *(nlp1+1) = *(rp1+1);
+        //   *(nrp1+1) = *(lp1+1);
 
 
-          *(nlp1+3) = *(rp1+3);
-          *(nrp1+3) = *(lp1+3);
+        //   *(nlp1+2) = *(rp1+2);
+        //   *(nrp1+2) = *(lp1+2);
 
-          nlp1+=4;
-          nrp1+=4;
-          lp1+=4;
-          rp1+=4;
+
+        //   *(nlp1+3) = *(rp1+3);
+        //   *(nrp1+3) = *(lp1+3);
+
+        //   nlp1+=4;
+        //   nrp1+=4;
+        //   lp1+=4;
+        //   rp1+=4;
+
+      for(int i=0; i<rows; i=i+32){
+          *((double*)nlp1) = *((double*)rp1);
+          *((double*)nrp1) = *((double*)lp1);
+
+          *((double*)nlp1+1) = *((double*)rp1+1);
+          *((double*)nrp1+1) = *((double*)lp1+1);
+
+          *((double*)nlp1+2) = *((double*)rp1+2);
+          *((double*)nrp1+2) = *((double*)lp1+2);
+
+          *((double*)nlp1+3) = *((double*)rp1+3);
+          *((double*)nrp1+3) = *((double*)lp1+3);
+        
+          nlp1+=32;
+          nrp1+=32;
+          lp1+=32;
+          rp1+=32;
         }
       }
     }
   }else if(flip_type==Vertical){
+    register char *ntp1, *nbp1;
+    register char *tp1, *bp1;
+
     for(int k=0; k<channels; k++){
       for(int i=0; i<cols-1; i++){
-        for(int t=0, b=rows-1; t<b; t++, b--){
-          new_array_ptr[k * cols * rows + i * rows + t] = array_ptr[k * cols * rows + i * rows + b];
-          new_array_ptr[k * cols * rows + i * rows + b] = array_ptr[k * cols * rows + i * rows + t];
+
+        int page_size = k * size;
+        int index_t = page_size + i * rows;
+        int index_b = page_size + i * rows + (rows-1);
+
+        ntp1 = &new_array_ptr[index_t];
+        nbp1 = &new_array_ptr[index_b];
+
+        tp1 = &array_ptr[index_t];
+        bp1 = &array_ptr[index_b];
+
+        for(int t=0, b=rows-1; t<b; t=t+4, b=b-4){
+        // for(int t=0, b=rows-1; t<b; t=t+32, b=b-32){
+        //   *((double*)ntp1) = *((double*)bp1);
+        //   *((double*)nbp1) = *((double*)tp1);
+
+        //   *(((double*)ntp1)+1) = *(((double*)bp1)+1);
+        //   *(((double*)nbp1)+1) = *(((double*)tp1)+1);
+
+        //   *(((double*)ntp1)+2) = *(((double*)bp1)+2);
+        //   *(((double*)nbp1)+2) = *(((double*)tp1)+2);
+
+        //   *(((double*)ntp1)+3) = *(((double*)bp1)+3);
+        //   *(((double*)nbp1)+3) = *(((double*)tp1)+3);
+
+          *(ntp1) = *(bp1);
+          *(nbp1) = *(tp1);
+
+          *(ntp1+1) = *(bp1-1);
+          *(nbp1-1) = *(tp1+1);
+
+          *(ntp1+2) = *(bp1-2);
+          *(nbp1-2) = *(tp1+2);
+
+          *(ntp1+3) = *(bp1-3);
+          *(nbp1-3) = *(tp1+3);
+
+          // ntp1+=32;
+          // nbp1-=32;
+          // tp1+=32;
+          // bp1-=32;
+
+          ntp1+=4;
+          nbp1-=4;
+          tp1+=4;
+          bp1-=4;
         }
       }
     }
