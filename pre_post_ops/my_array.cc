@@ -1,6 +1,6 @@
 #include"my_array.h"
 
-void MyArray::Reset(int channels, int rows, int cols, double* array_ptr){
+void MyArray::Reset(int channels, int rows, int cols, char* array_ptr){
   this->channels = channels;
   this->rows = rows;
   this->cols = cols;

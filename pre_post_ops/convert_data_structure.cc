@@ -4,21 +4,21 @@ std::unique_ptr<MyArray> ConvertOpencvMat2MyArray(cv::Mat mat){
   int channels = mat.channels();
   int rows = mat.rows;
   int cols = mat.cols;
-  double* array_ptr = static_cast<double*>(malloc(channels * rows * cols * sizeof(double)));
+  char* array_ptr = static_cast<char*>(malloc(channels * rows * cols * sizeof(char)));
   std::unique_ptr<MyArray> ptr = std::make_unique<MyArray>(channels, rows, cols, array_ptr);
   
   if(channels == 3){
     for(int j=0; j<cols; j++){
       for(int i=0; i<rows; i++){
-        array_ptr[0 * cols * rows + j * rows + i] = static_cast<double>(mat.at<cv::Vec3b>(i, j)[0]);
-        array_ptr[1 * cols * rows + j * rows + i] = static_cast<double>(mat.at<cv::Vec3b>(i, j)[1]);
-        array_ptr[2 * cols * rows + j * rows + i] = static_cast<double>(mat.at<cv::Vec3b>(i, j)[2]);
+        array_ptr[0 * cols * rows + j * rows + i] = static_cast<char>(mat.at<cv::Vec3b>(i, j)[0]);
+        array_ptr[1 * cols * rows + j * rows + i] = static_cast<char>(mat.at<cv::Vec3b>(i, j)[1]);
+        array_ptr[2 * cols * rows + j * rows + i] = static_cast<char>(mat.at<cv::Vec3b>(i, j)[2]);
       }
     }
   }else if(channels == 1){
     for(int j=0; j<cols; j++){
       for(int i=0; i<rows; i++){
-        array_ptr[0 * cols * rows + j * rows + i] = static_cast<double>(mat.at<uchar>(i, j));
+        array_ptr[0 * cols * rows + j * rows + i] = static_cast<char>(mat.at<uchar>(i, j));
       }
     }
   }
@@ -30,7 +30,7 @@ cv::Mat ConvertMyArray2OpencvMat(const std::unique_ptr<MyArray> & ptr){
   int channels = ptr->get_channels();
   int cols = ptr->get_cols();
   int rows = ptr->get_rows();
-  double* array_ptr = ptr->get_array_ptr();
+  char* array_ptr = ptr->get_array_ptr();
 
   if(channels==3){
     cv::Mat mat(rows, cols, CV_8UC3);
