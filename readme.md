@@ -107,15 +107,15 @@ Load Average: 32.33, 28.65, 27.90
 -----------------------------------------------------------
 Benchmark                 Time             CPU   Iterations
 -----------------------------------------------------------
-BenchMyFlipH        7542946 ns      7543941 ns           90
-BenchCVFlipH       20188839 ns     20188464 ns           34
-BenchMyFlipV      106082238 ns    106071807 ns            7
-BenchCVFlipV        1700027 ns      1701790 ns          425
-BenchMyCrop          281078 ns       281186 ns         2447
-BenchCVCrop            1175 ns         1180 ns       607625
-BenchMyPad        124285855 ns    124262915 ns            5
-BenchCVPad          5892936 ns      5894408 ns          121
-BenchMyBGRToGray   97193044 ns     97185023 ns            7
-BenchCVBGRToGray    2718064 ns       286480 ns         1000
+BenchMyFlipH        2308983 ns      2310891 ns          308
+BenchCVFlipH       20242288 ns     20241748 ns           34
+BenchMyFlipV       49436947 ns     49425331 ns           16
+BenchCVFlipV        1593074 ns      1595057 ns          364
+BenchMyCrop          285063 ns       285019 ns         2490
+BenchCVCrop            1155 ns         1160 ns       605766
+BenchMyPad        119466399 ns    119455031 ns            5
+BenchCVPad          6098584 ns      6100723 ns          118
+BenchMyBGRToGray   98372893 ns     98365688 ns            7
+BenchCVBGRToGray    2704552 ns       214583 ns         1000
 ```
 
