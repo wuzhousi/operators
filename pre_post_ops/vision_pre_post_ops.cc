@@ -46,7 +46,7 @@
 //         flipHoriz( dst.ptr(), dst.step, dst.ptr(), dst.step, dst.size(), esz );
 // }
 
-// void flipHoriz( const uchar* src, size_t sstep, uchar* dst, size_t dstep, cv::Size size, size_t esz)
+// void flipHoriz( const uunsigned char* src, size_t sstep, uunsigned char* dst, size_t dstep, cv::Size size, size_t esz)
 // {
 //     int i, j, limit = (int)(((size.width + 1)/2)*esz);
 //     cv::AutoBuffer<int> _tab(size.width*esz);
@@ -61,16 +61,16 @@
 //         for( i = 0; i < limit; i++ )
 //         {
 //             j = tab[i];
-//             uchar t0 = src[i], t1 = src[j];
+//             uunsigned char t0 = src[i], t1 = src[j];
 //             dst[i] = t1; dst[j] = t0;
 //         }
 //     }
 // }
 
-// void flipVert( const uchar* src0, size_t sstep, uchar* dst0, size_t dstep, cv::Size size, size_t esz)
+// void flipVert( const uunsigned char* src0, size_t sstep, uunsigned char* dst0, size_t dstep, cv::Size size, size_t esz)
 // {
-//     const uchar* src1 = src0 + (size.height - 1)*sstep;
-//     uchar* dst1 = dst0 + (size.height - 1)*dstep;
+//     const uunsigned char* src1 = src0 + (size.height - 1)*sstep;
+//     uunsigned char* dst1 = dst0 + (size.height - 1)*dstep;
 //     size.width *= (int)esz;
 
 //     for( int y = 0; y < (size.height + 1)/2; y++, src0 += sstep, src1 -= sstep,
@@ -118,8 +118,8 @@
 
 //         for( ; i < size.width; i++ )
 //         {
-//             uchar t0 = src0[i];
-//             uchar t1 = src1[i];
+//             uunsigned char t0 = src0[i];
+//             uunsigned char t1 = src1[i];
 
 //             dst0[i] = t1;
 //             dst1[i] = t0;
@@ -131,15 +131,15 @@ void Flip(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> &
   int channels = ptr->get_channels();
   int cols = ptr->get_cols();
   int rows = ptr->get_rows();
-  char* array_ptr = ptr->get_array_ptr();
+  unsigned char* array_ptr = ptr->get_array_ptr();
 
   int size = rows * cols;
 
-  char* new_array_ptr = static_cast<char*>(malloc(channels * size * sizeof(char)));
+  unsigned char* new_array_ptr = static_cast<unsigned char*>(malloc(channels * size * sizeof(unsigned char)));
 
   if(flip_type==Horizontal){
-    register char *nlp1, *nrp1;
-    register char *lp1, *rp1;
+    register unsigned char *nlp1, *nrp1;
+    register unsigned char *lp1, *rp1;
     for(int k=0; k<channels; k++){
       for(int l=0, r=cols-1; l<r; l++, r--){
         
@@ -173,8 +173,8 @@ void Flip(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> &
       }
     }
   }else if(flip_type==Vertical){
-    register char *ntp1, *nbp1;
-    register char *tp1, *bp1;
+    register unsigned char *ntp1, *nbp1;
+    register unsigned char *tp1, *bp1;
 
     for(int k=0; k<channels; k++){
       for(int i=0; i<cols-1; i++){
@@ -217,19 +217,19 @@ void Crop(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> &
   int channels = ptr->get_channels();
   int cols = ptr->get_cols();
   int rows = ptr->get_rows();
-  char* array_ptr = ptr->get_array_ptr();
+  unsigned char* array_ptr = ptr->get_array_ptr();
 
   if(x<0 || y<0){
     return;
   }
 
-  char* new_array_ptr = static_cast<char*>(malloc(channels * width * height * sizeof(char)));
+  unsigned char* new_array_ptr = static_cast<unsigned char*>(malloc(channels * width * height * sizeof(unsigned char)));
 
   int min_h = std::min(x+height, rows);
   int min_w = std::min(y+width, cols);
 
 
-  register char *np, *p;
+  register unsigned char *np, *p;
 
   for(int k=0; k<channels; k++){
     int size = k * rows * cols;
@@ -259,18 +259,18 @@ void Pad(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> & 
   int channels = ptr->get_channels();
   int cols = ptr->get_cols();
   int rows = ptr->get_rows();
-  char* array_ptr = ptr->get_array_ptr();
+  unsigned char* array_ptr = ptr->get_array_ptr();
 
   int new_rows = top_pad + bottom_pad + rows;
   int new_cols = left_pad + right_pad + cols;
 
-  char* new_array_ptr = static_cast<char*>(malloc(channels * new_rows * new_cols * sizeof(char)));
+  unsigned char* new_array_ptr = static_cast<unsigned char*>(malloc(channels * new_rows * new_cols * sizeof(unsigned char)));
 
   for(int k=0; k<channels; k++){
     int size = k * rows * cols;
     int nsize = k * new_rows * new_cols;
 
-    register char *np, *p;
+    register unsigned char *np, *p;
 
     for(int j=0; j<cols; j++){
       p = array_ptr + size + j * rows;
@@ -291,18 +291,18 @@ void Pad(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> & 
   out_ptr->Reset(channels, new_rows, new_cols, new_array_ptr);
 }
 
-void Erase(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> & out_ptr, int x, int y, int height, int width, char value){
+void Erase(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> & out_ptr, int x, int y, int height, int width, unsigned char value){
   int channels = ptr->get_channels();
   int cols = ptr->get_cols();
   int rows = ptr->get_rows();
-  char* array_ptr = ptr->get_array_ptr();
+  unsigned char* array_ptr = ptr->get_array_ptr();
 
   if(x<0 || y<0){
     return;
   }
 
-  char* new_array_ptr = static_cast<char*>(malloc(channels * rows * cols * sizeof(char)));
-  memcpy(new_array_ptr, array_ptr, channels * rows * cols * sizeof(char));
+  unsigned char* new_array_ptr = static_cast<unsigned char*>(malloc(channels * rows * cols * sizeof(unsigned char)));
+  memcpy(new_array_ptr, array_ptr, channels * rows * cols * sizeof(unsigned char));
 
   int min_h = std::min(x+height, rows);
   int min_w = std::min(y+width, cols);
@@ -321,13 +321,13 @@ void Erase(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> 
 void ConvertBGRToGray(const std::unique_ptr<MyArray> & ptr, const std::unique_ptr<MyArray> & out_ptr){
   int cols = ptr->get_cols();
   int rows = ptr->get_rows();
-  char* array_ptr = ptr->get_array_ptr();  
+  unsigned char* array_ptr = ptr->get_array_ptr();  
 
-  char* new_array_ptr = static_cast<char*>(malloc(rows * cols * sizeof(char)));
-  memset(new_array_ptr, static_cast<int64_t>(0), rows * cols * sizeof(char));
+  unsigned char* new_array_ptr = static_cast<unsigned char*>(malloc(rows * cols * sizeof(unsigned char)));
+  memset(new_array_ptr, static_cast<int64_t>(0), rows * cols * sizeof(unsigned char));
 
 
-  register char *np, *p1, *p2, *p3;
+  register unsigned char *np, *p1, *p2, *p3;
   np = new_array_ptr;
   p1 = array_ptr;
   p2 = array_ptr + rows * cols;
@@ -377,10 +377,10 @@ void ConvertBGRToGray(const std::unique_ptr<MyArray> & ptr, const std::unique_pt
   //     res = _mm_add_ps(mr, mg);
   //     res = _mm_add_ps(mb, res);
 
-  //     *np = (char) res[0];
-  //     *(np+1) = (char) res[1];
-  //     *(np+2) = (char) res[2];
-  //     *(np+3) = (char) res[3];
+  //     *np = (unsigned char) res[0];
+  //     *(np+1) = (unsigned char) res[1];
+  //     *(np+2) = (unsigned char) res[2];
+  //     *(np+3) = (unsigned char) res[3];
 
   //     np+=4;
   //     p1+=4;
@@ -392,10 +392,20 @@ void ConvertBGRToGray(const std::unique_ptr<MyArray> & ptr, const std::unique_pt
 
   for(int j=0; j<cols; j++){
     for(int i=0; i<rows; i+=4){
-      *np = 0.114 * *p1 + 0.587 * *p2 + 0.587 * *p3;
-      *(np+1) = 0.114 * *(p1+1) + 0.587 * *(p2+1) + 0.587 * *(p3+1);
-      *(np+2) = 0.114 * *(p1+2) + 0.587 * *(p2+2) + 0.587 * *(p3+2);
-      *(np+3) = 0.114 * *(p1+3) + 0.587 * *(p2+3) + 0.587 * *(p3+3);
+      // *np = (unsigned char) (0.114 * ((float)*p1) + 0.587 * ((float)*p2) + 0.587 * ((float)*p3));
+      // *(np+1) = (unsigned char) (0.114 * ((float)*(p1+1)) + 0.587 * ((float)*(p2+1)) + 0.587 * ((float)*(p3+1)));
+      // *(np+2) = (unsigned char) (0.114 * ((float)*(p1+2)) + 0.587 * ((float)*(p2+2)) + 0.587 * ((float)*(p3+2)));
+      // *(np+3) = (unsigned char) (0.114 * ((float)*(p1+3)) + 0.587 * ((float)*(p2+3)) + 0.587 * ((float)*(p3+3)));
+
+      *np = 0.114 * *p1 + 0.587 * *p2 + 0.2989 * *p3;
+      *(np+1) = 0.114 * *(p1+1) + 0.587 * *(p2+1) + 0.2989 * *(p3+1);
+      *(np+2) = 0.114 * *(p1+2) + 0.587 * *(p2+2) + 0.2989 * *(p3+2);
+      *(np+3) = 0.114 * *(p1+3) + 0.587 * *(p2+3) + 0.2989 * *(p3+3);
+
+      np+=4;
+      p1+=4;
+      p2+=4;
+      p3+=4;
     }
   }
   out_ptr->Reset(1, rows, cols, new_array_ptr);
