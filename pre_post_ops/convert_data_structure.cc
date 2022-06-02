@@ -5,6 +5,7 @@ std::unique_ptr<MyArray> ConvertOpencvMat2MyArray(cv::Mat mat){
   int rows = mat.rows;
   int cols = mat.cols;
   char* array_ptr = static_cast<char*>(malloc(channels * rows * cols * sizeof(char)));
+  
   std::unique_ptr<MyArray> ptr = std::make_unique<MyArray>(channels, rows, cols, array_ptr);
   
   if(channels == 3){

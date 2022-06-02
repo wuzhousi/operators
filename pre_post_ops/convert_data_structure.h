@@ -1,6 +1,7 @@
 #ifndef OPERATORS_PRE_POST_OPS_CONVERT_DATA_STRUCTURE
 #define OPERATORS_PRE_POST_OPS_CONVERT_DATA_STRUCTURE
 
+#include<cstring>
 #include<memory>
 #include<iostream>
 

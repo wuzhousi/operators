@@ -22,6 +22,20 @@ static void BenchMyFlipH(benchmark::State& state){
   cv::imwrite("./res_fliph.jpg", image_fliph);
 }
 
+// static void BenchMyFlipH(benchmark::State& state){
+//   cv::Mat image = cv::imread("/root/vscode/operators/lena_sr.jpg", cv::IMREAD_COLOR);
+//   for (auto _ : state){
+//     state.PauseTiming();
+//     cv::Mat image_fliph;
+//     state.ResumeTiming();
+//     mflip(image, image_fliph, 1);
+//   }
+
+//   cv::Mat image_fliph;
+//   mflip(image, image_fliph, 1);
+//   cv::imwrite("./res_fliph.jpg", image_fliph);
+// }
+
 static void BenchCVFlipH(benchmark::State& state){
   cv::Mat image = cv::imread("/root/vscode/operators/lena_sr.jpg", cv::IMREAD_COLOR);
   for (auto _ : state){
@@ -51,6 +65,20 @@ static void BenchMyFlipV(benchmark::State& state){
   cv::imwrite("./res_flipv.jpg", image_flipv);
 }
 
+// static void BenchMyFlipV(benchmark::State& state){
+//   cv::Mat image = cv::imread("/root/vscode/operators/lena_sr.jpg", cv::IMREAD_COLOR);
+//   for (auto _ : state){
+//     state.PauseTiming();
+//     cv::Mat image_flipv;
+//     state.ResumeTiming();
+//     mflip(image, image_flipv, 0);
+//   }
+
+//   cv::Mat image_flipv;
+//   cv::flip(image, image_flipv, 0);
+//   cv::imwrite("./res_flipv.jpg", image_flipv);
+// }
+
 static void BenchCVFlipV(benchmark::State& state){
   cv::Mat image = cv::imread("/root/vscode/operators/lena_sr.jpg", cv::IMREAD_COLOR);
   for (auto _ : state){
@@ -70,19 +98,19 @@ static void BenchMyCrop(benchmark::State& state){
   std::unique_ptr<MyArray> ptr = ConvertOpencvMat2MyArray(image);
   std::unique_ptr<MyArray> out_ptr = std::make_unique<MyArray>();
   for (auto _ : state){
-    Crop(ptr, out_ptr, 100, 100, 100, 100);
+    Crop(ptr, out_ptr, 100, 100, 320, 320);
     state.PauseTiming();
     out_ptr->Reset(0, 0, 0, nullptr);
     state.ResumeTiming();
   }
-  Crop(ptr, out_ptr, 100, 100, 100, 100);
+  Crop(ptr, out_ptr, 100, 100, 320, 320);
   cv::Mat image_crop = ConvertMyArray2OpencvMat(out_ptr);
   cv::imwrite("./res_crop.jpg", image_crop);
 }
 
 static void BenchCVCrop(benchmark::State& state){
   cv::Mat image = cv::imread("/root/vscode/operators/lena_sr.jpg", cv::IMREAD_COLOR);
-  cv::Rect roi(100, 100, 100, 100);
+  cv::Rect roi(100, 100, 320, 320);
   for (auto _ : state){
     state.PauseTiming();
     cv::Mat crop;

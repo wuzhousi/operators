@@ -55,15 +55,15 @@
 #### 性能优化
 
 - [ ] 视觉前后处理算子优化
-	- [ ] crop：在指定位置裁剪给定大小图像。
-	- [ ] flip：翻转给定的图像。（水平、垂直）
-	- [ ] pad：用给定的“pad”大小，扩展给定图像边缘。
+	- [x] crop：在指定位置裁剪给定大小图像。（正在进行）
+	- [x] flip：翻转给定的图像。（水平、垂直）（正在进行）
+	- [x] pad：用给定的“pad”大小，扩展给定图像边缘。（正在进行）
 	- [ ] erase: 在指定位置擦除给定大小图像。
 	- [ ] normalize: 用均值和标准差对图像进行归一化。
 	- [ ] rotate: 按角度旋转图像。
 	- [ ] perspective：透视变换。
 	- [ ] affine：仿射变换。
-	- [ ] rgb_to_gray：将图像转换为灰度。
+	- [x] rgb_to_gray：将图像转换为灰度。（正在进行）
 	- [ ] invert: 反转图像的颜色。
 	- [ ] posterize:通过减少每个颜色通道的位数来对图像进行后处理。
 	- [ ] solarize:通过反转高于阈值的所有像素值来曝光。
@@ -107,15 +107,15 @@ Load Average: 32.33, 28.65, 27.90
 -----------------------------------------------------------
 Benchmark                 Time             CPU   Iterations
 -----------------------------------------------------------
-BenchMyFlipH        2308983 ns      2310891 ns          308
-BenchCVFlipH       20242288 ns     20241748 ns           34
-BenchMyFlipV       49436947 ns     49425331 ns           16
-BenchCVFlipV        1593074 ns      1595057 ns          364
-BenchMyCrop          285063 ns       285019 ns         2490
-BenchCVCrop            1155 ns         1160 ns       605766
-BenchMyPad        119466399 ns    119455031 ns            5
-BenchCVPad          6098584 ns      6100723 ns          118
-BenchMyBGRToGray   98372893 ns     98365688 ns            7
-BenchCVBGRToGray    2704552 ns       214583 ns         1000
+BenchMyFlipH        2222652 ns      2224905 ns          323
+BenchCVFlipH       19750790 ns     19750788 ns           35
+BenchMyFlipV       48232346 ns     48228492 ns           17
+BenchCVFlipV        1584737 ns      1586500 ns          444
+BenchMyCrop           51100 ns        51280 ns        11690
+BenchCVCrop            1095 ns         1097 ns       659663
+BenchMyPad          2422430 ns      2424379 ns          277
+BenchCVPad          5570971 ns      5572328 ns          126
+BenchMyBGRToGray   43498726 ns     43493922 ns           16
+BenchCVBGRToGray    2414603 ns       255112 ns         3081
 ```
 
